@@ -5,7 +5,7 @@ const bot = mineflayer.createBot({
   host: 'ValoriaCraft.aternos.me', // örnek: valoriacraft.aternos.me
   port: 29946, // değişmediyse bu kalsın
   username: 'ValoriaCraft', // Premium hesapsa e-posta / Cracked sunucuysa sadece isim
-  version: true // Sunucu sürümünü otomatik bulur
+  version: 1.20.1 // Sunucu sürümünü otomatik bulur
 });
 
 // Konsol logları
