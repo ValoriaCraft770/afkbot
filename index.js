@@ -1,24 +1,19 @@
 const mineflayer = require('mineflayer');
 
-// Sunucu bilgilerini BURAYA yaz
+// 🟢 Botu oluştur
 const bot = mineflayer.createBot({
-  host: 'ValoriaCraft.aternos.me', // örnek: valoriacraft.aternos.me
-  port: 29946, // değişmediyse bu kalsın
-  username: 'ValoriaCraft', // Premium hesapsa e-posta / Cracked sunucuysa sadece isim
-  version: 1.20.1 // Sunucu sürümünü otomatik bulur
+  host: 'ValoriaCraft.aternos.me', // Buraya kendi Aternos adresini yaz
+  port: 29946, // genelde değişmez
+  username: 'AFKBot', // Bot ismi
+  version: '1.20.1' // Sunucunun Minecraft sürümü
 });
 
-// Konsol logları
-bot.on('login', () => console.log(`[BOT] Giriş yaptı: ${bot.username}`));
-bot.on('spawn', () => console.log('[BOT] Sunucuda spawn oldu.'));
-bot.on('end', () => console.log('[BOT] Bağlantı koptu, yeniden bağlanacak...'));
-
-// Bağlantı koparsa 10 saniye sonra yeniden bağlan
-bot.on('end', () => setTimeout(() => process.exit(0), 10000));
-bot.on('error', err => console.log(`[Hata] ${err}`));
-
-// Küçük hareket (AFK tespiti engeller)
-setInterval(() => {
-  const yaw = Math.random() * Math.PI * 2;
-  bot.look(yaw, 0, false);
-}, 60000);
+// 🟢 Sunucuya bağlanınca çalışacak olay
+bot.on('spawn', () => {
+  console.log('✅ Bot sunucuya bağlandı!');
+  
+  // 1 dakikada bir sohbet mesajı atar (AFK kalmasın diye)
+  setInterval(() => {
+    bot.chat('ben buradayım 👋');
+  }, 60000);
+});
