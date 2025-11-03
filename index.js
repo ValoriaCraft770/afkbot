@@ -1,35 +1,28 @@
 const mineflayer = require('mineflayer');
 
-// 🟢 Botu oluştur
-const bot = mineflayer.createBot({
-  host: 'valoriacraft.aternos.me', // <-- Buraya kendi Aternos adresini yaz
-  port: 25565,                      // Genelde değişmez
-  username: 'AFKBot',               // Bot ismi (cracked sunucularda yeterli)
-  version: '1.20.1'                 // Sunucunun Minecraft sürümü
-});
+function createBot() {
+  const bot = mineflayer.createBot({
+    host: 'valoriacraft.aternos.me',
+    port: 25565,
+    username: 'AFKBot',
+    version: '1.20.1'
+  });
 
-// 🟢 Sunucuya bağlanınca çalışacak olay
-bot.on('spawn', () => {
-  console.log('✅ Bot sunucuya bağlandı!');
+  bot.on('spawn', () => {
+    console.log('✅ Bot sunucuya bağlandı!');
+    bot.chat('/register benbot');
+    setInterval(() => bot.chat('ben buradayım 👋'), 60000);
+  });
 
-  // 1️⃣ /register benbot komutunu yaz
-  bot.chat('/register benbot');
+  bot.on('end', () => setTimeout(() => process.exit(0), 10000));
+  bot.on('error', err => console.log(`[Hata] ${err}`));
+  process.stdin.resume();
+}
 
-  // 2️⃣ 1 dakikada bir chat mesajı atarak AFK atılmayı engeller
-  setInterval(() => {
-    bot.chat('ben buradayım 👋');
-  }, 60000);
-});
+createBot();
 
-// 🟢 Hata yakalama ve yeniden bağlanma
-bot.on('end', () => {
-  console.log('[BOT] Bağlantı koptu, 10 saniye sonra yeniden bağlanacak...');
-  setTimeout(() => process.exit(0), 10000); // GitHub Actions yeniden başlatır
-});
-
-bot.on('error', err => {
-  console.log(`[Hata] ${err}`);
-});
-
-// 🟢 Node.js’in kapanmasını engelle
-process.stdin.resume();
+// 6 saat sonra botu kapat
+setTimeout(() => {
+  console.log('[BOT] 6 saat doldu, bot restart ediliyor...');
+  process.exit(0); // Eğer otomatik restart yoksa sadece kapanır
+}, 21600000);
