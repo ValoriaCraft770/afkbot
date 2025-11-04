@@ -4,7 +4,7 @@ function createBot() {
   const bot = mineflayer.createBot({
     host: 'ValoriaCraft.aternos.me', // Sunucu adresin
     port: 25565,
-    username: 'AFKBot',               // Bot ismi
+    username: 'güzelinsan',               // Bot ismi
     version: '1.20.1'                 // Sunucu sürümü
   });
 
