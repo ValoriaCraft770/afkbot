@@ -1,47 +1,36 @@
-const mineflayer = require('mineflayer')
+const mineflayer = require('mineflayer');
 
-function start() {
+function startBot() {
   const bot = mineflayer.createBot({
-    host: 'ValoriaCraft.aternos.me', // sunucu adresi
-    port: 25565,
-    username: 'Güzelinsan',
-    version: '1.20.1'
-  })
+    host: 'ValoriaCraft.aternos.me', // Sunucu IP
+    port: 29946,                     // Port
+    username: 'Güzelinsan',              // Bot ismi
+    version: '1.20.1'                // Sürüm
+  });
 
   bot.once('spawn', () => {
-    console.log('✅ Bot sunucuya bağlandı!')
-    bot.chat('/register benbot')
+    console.log('✅ Bot sunucuya bağlandı!');
+    bot.chat('/login benbot'); // veya /register benbot
 
-    // Oyuncu verisi senkronunu minimuma indir
-    bot.physicsEnabled = false
-    bot._client.write('settings', {
-      locale: 'en_US',
-      viewDistance: 2, // 2 chunk ile sınırla
-      chatFlags: 0,
-      chatColors: false,
-      skinParts: 0
-    })
-  })
+    // Her 40 saniyede bir kafasını hafifçe çevirir
+    setInterval(() => {
+      const yaw = Math.random() * Math.PI * 2; // Sağ sol
+      const pitch = (Math.random() - 0.5) * Math.PI / 8; // Yukarı aşağı
+      bot.look(yaw, pitch, false);
+    }, 40000);
 
-  bot.on('move', () => {
-    // Eğer chunk yükleniyorsa dondur
-    bot.entity.velocity.x = 0
-    bot.entity.velocity.y = 0
-    bot.entity.velocity.z = 0
-  })
+    // 5 saat sonra otomatik çıkar
+    setTimeout(() => {
+      console.log('🕐 5 saat doldu, bot çıkıyor...');
+      bot.quit();
+    }, 5 * 60 * 60 * 1000);
+  });
 
   bot.on('end', () => {
-    console.log('[BOT] Bağlantı koptu. 60 saniye sonra tekrar bağlanıyor...')
-    setTimeout(start, 60000)
-  })
+    console.log('🔌 Bot sunucudan çıktı.');
+  });
 
-  bot.on('kicked', (reason) => {
-    console.log('[BOT] Sunucudan atıldı:', reason)
-  })
-
-  bot.on('error', (err) => {
-    console.log('[HATA]', err)
-  })
+  bot.on('error', err => console.log('[HATA]:', err));
 }
 
-start()
+startBot();
